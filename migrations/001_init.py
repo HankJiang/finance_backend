@@ -36,14 +36,12 @@ SQL = pw.SQL
 
 
 def migrate(migrator, database, fake=False, **kwargs):
-    """Write your migrations here."""
     migrator.create_model(User)
     migrator.create_model(Stock)
     migrator.create_model(StockHistory)
 
 
 def rollback(migrator, database, fake=False, **kwargs):
-    """Write your rollback migrations here."""
     migrator.remove_model(User)
     migrator.remove_model(Stock)
     migrator.remove_model(StockHistory)
