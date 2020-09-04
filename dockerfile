@@ -8,6 +8,8 @@ WORKDIR /www
 
 ENV FLASK_ENV=production
 
+RUN apk add --update --no-cache g++ gcc libxml2-dev libxslt-dev python-dev libffi-dev openssl-dev make
+
 RUN pip install --isolated -r requirements.txt
 
 COPY . /www
