@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.7-slim
 
 MAINTAINER gsxxm jianghan.ah@foxmail.com
 
@@ -7,9 +7,6 @@ COPY ./requirements.txt /www/requirements.txt
 WORKDIR /www
 
 ENV FLASK_ENV=production
-
-RUN apk update
-RUN apk add build-base
 
 RUN pip install --isolated -r requirements.txt
 

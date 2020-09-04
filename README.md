@@ -10,7 +10,7 @@
  - 方式1
  
     ```bash
-     > export FLASKENV=development
+     > export FLASK_ENV=development
      > flask run
     ```
  
