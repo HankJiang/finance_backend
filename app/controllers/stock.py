@@ -11,7 +11,7 @@ def register():
     code, start, end = params('code', 'start', 'end')
     data = Stock.history(code, start, end)
 
-    if data:
-        Stock.update_by_code(code, data)
+    # if data:
+    #     Stock.update_by_code(code, data)
 
     return render_ok(data)
