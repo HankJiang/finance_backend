@@ -1,0 +1,43 @@
+version: '3' # 定义版本，不指定默认为版本 1，新版本功能更多
+
+services: # 容器，就像 docker run
+
+   mysql: # 名称，它也是 network 中 DNS 名称
+     image: mysql:5.7 # 镜像，如果像自定义镜像可以不指定这个参数，而用 build
+     volumes: # 定义数据卷，类似 -v
+#       - /data/stone/mysql_db:/var/lib/mysql
+       - /Users/jianghan/www/data/stone/mysql_db:/var/lib/mysql
+     restart: always # 类似 --restart
+     # 'no' 默认，不自动重启，以为 no 是 yaml 关键字所以加引号
+     # always 总是自动重启
+     # on-failure 当失败时自动重启，也就是 exit code 不为 0 时
+     # unless-stopped 除非手动停止，否者一直重启
+     environment: # 定义环境变量，类似 -e
+       MYSQL_ROOT_PASSWORD: 123456
+       MYSQL_DATABASE: finance
+       MYSQL_USER: root
+       MYSQL_PASSWORD: 123456
+
+     ports:
+       - "3306:3306"
+     networks:
+       - backend
+
+   app:
+     depends_on:
+       - mysql
+#     image: gsxxm/finance:backend
+     build: ./
+     ports: # 端口，类似 -p
+       - "9001:9001"
+     restart: always
+     environment:
+       FLASK_ENV: production
+
+     networks:
+       - backend
+
+#volumes: # 可选，类似 docker volume create
+
+networks: # 可选，需要创建的网络，类似 docker network create
+  backend:

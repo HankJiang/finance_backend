@@ -1,4 +1,5 @@
 import click
+import os
 from peewee_migrate import Router
 from app.db import db
 
@@ -17,15 +18,15 @@ def db_create(migration_name):
 
 
 @db.command()
-@click.argument('migration_name')
-def db_upgrade(migration_name):
-    router.run(migration_name)
+def db_upgrade():
+    last_migrate = os.listdir('./migrations')[-1][0:-3]
+    router.run(last_migrate)
 
 
 @db.command()
-@click.argument('migration_name')
-def db_downgrade(migration_name):
-    router.rollback(migration_name)
+def db_downgrade():
+    last_migrate = os.listdir('./migrations')[-1][0:-3]
+    router.rollback(last_migrate)
 
 
 commands = click.CommandCollection(sources=[db])

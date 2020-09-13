@@ -36,3 +36,24 @@
     - `> docker pull remote-image:tagname`
     - `> docker login -u username -p password` 私有仓库先登录
     - `> docker run -p local-port:contaner-port -d image-id`
+    
+    
+ #### 使用K8S
+ 
+ ##### kubeadm
+ 
+  - 初始化
+    
+    ```bash
+        kubeadm init --config kubeadm.yaml
+    ```
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

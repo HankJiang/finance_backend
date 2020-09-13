@@ -12,4 +12,4 @@ RUN pip install --isolated -r requirements.txt
 
 COPY . /www
 
-CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:8888", "app:app"]
+CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:9001", "app:app"]
