@@ -12,4 +12,5 @@ RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
 COPY . /www
 
-CMD ["python ./manage.py db-upgrade","gunicorn", "-w", "2", "-b", "0.0.0.0:9001", "app:app"]
+ENTRYPOINT ["./entry-point.sh"]
+
