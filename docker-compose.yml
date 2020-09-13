@@ -28,6 +28,7 @@ services: # 容器，就像 docker run
        - mysql
 #     image: gsxxm/finance:backend
      build: ./
+     image: finance_backend:demo
      ports: # 端口，类似 -p
        - "9001:9001"
      restart: always
