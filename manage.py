@@ -1,4 +1,4 @@
-import click
+import click as click
 import os
 from peewee_migrate import Router
 from app.db import db
