@@ -8,6 +8,7 @@ WORKDIR /www
 
 ENV FLASK_ENV=production
 
+RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple
 RUN pip install --isolated -r requirements.txt
 
 COPY . /www
