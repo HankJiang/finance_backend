@@ -11,6 +11,8 @@ class Development(Config):
     MYSQL_DATABASE_USER = 'root'
     MYSQL_DATABASE_PASSWORD = '123456'
 
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@localhost/finance'
+
 
 class Production(Config):
     DEBUG = False
@@ -20,6 +22,8 @@ class Production(Config):
     MYSQL_DATABASE_PORT = 3306
     MYSQL_DATABASE_USER = 'root'
     MYSQL_DATABASE_PASSWORD = '123456'
+
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@mysql/finance'
 
 
 current_env = os.getenv('FLASK_ENV')

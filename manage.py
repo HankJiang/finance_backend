@@ -1,35 +1,11 @@
-import click
-import os
-from peewee_migrate import Router
-from app.db import db
-
-router = Router(db)
+from flask_migrate import MigrateCommand
+from flask_script import Manager
+from app import app
 
 
-@click.group()
-def db():
-    pass
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
-
-@db.command()
-@click.argument('migration_name')
-def db_create(migration_name):
-    router.create(migration_name)
-
-
-@db.command()
-def db_upgrade():
-    last_migrate = os.listdir('./migrations')[-1][0:-3]
-    router.run(last_migrate)
-
-
-@db.command()
-def db_downgrade():
-    last_migrate = os.listdir('./migrations')[-1][0:-3]
-    router.rollback(last_migrate)
-
-
-commands = click.CommandCollection(sources=[db])
 
 if __name__ == '__main__':
-    commands()
+    manager.run()

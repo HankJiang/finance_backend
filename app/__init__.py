@@ -1,6 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
 import config
+
+db = SQLAlchemy()
 
 
 def create_app(test_config=None):
@@ -20,6 +25,10 @@ def create_app(test_config=None):
     # cors
     app.url_map.strict_slashes = False
     CORS(app, supports_credentials=True, resources={r"*": {"origins": "*"}})
+
+    # db
+    db.init_app(app)
+    Migrate(app, db)
 
     return app
 

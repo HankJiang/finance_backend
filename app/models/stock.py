@@ -1,61 +1,28 @@
-import re
-import pandas_datareader as pdr
-from flask import json
-from enum import Enum
-from datetime import datetime
-
-from .base import *
+from app import db
 
 
-class Stock(BaseModel):
-    class MarketChoices(Enum):
-        UNKNOWN = 0
-        SHANG_HAI = 1
-        SHEN_ZHEN = 2
+class Stock(db.Model):
+    __tablename__ = 'stocks'
 
-    code = CharField(unique=True)  # 股票唯一编码
-    name = CharField()  # 上市公司名称
-    market = EnumField(choices=MarketChoices)  # 所属市场
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(80), unique=True)
+    search_code = db.Column(db.String(120), unique=True)
+    name = db.Column(db.String(120), unique=True)
 
-    @classmethod
-    def update_by_code(cls, code, history):
-        _, market = cls.parse_stock_code(code)
-        stock, _ = cls.get_or_create(code=code, market=market)
+    area = db.Column(db.String(120))
+    industry = db.Column(db.String(120))
+    ipo_date = db.Column(db.Date())
 
-        for item in history:
-            stock.stock_history.model.get_or_create(
-                date=item['Date'],
-                stock=stock,
-                defaults={
-                    'close': item['Close'],
-                    'high': item['High'],
-                    'low': item['Low'],
-                    'open': item['Open']
-            })
+    def __init__(self, code, search_code, name, area, industry, ipo_date):
+        self.code = code
+        self.search_code = search_code
+        self.name = name
+        self.area = area
+        self.industry = industry
+        self.ipo_date = ipo_date
 
-    @classmethod
-    def history(cls, code, start, end):
-        return cls.search_from_pandas(code, start, end)
+    def __repr__(self):
+        return '<Stock %r>' % self.name
 
-    @classmethod
-    def realtime(cls, code):
-        today = datetime.now().strftime('%Y-%m-%d')
-        return cls.search_from_pandas(code, today, today)[0]
 
-    @classmethod
-    def search_from_pandas(cls, code, start, end):
-        resp = pdr.get_data_yahoo(cls.parse_stock_code(code)[0], start, end)
-        data = resp.to_json(orient="table")
-        data = json.loads(data)['data']
-        data = sorted(data, key=lambda d: d['Date'])
-        return data
-
-    @classmethod
-    def parse_stock_code(cls, code):
-        if re.match('^[00|200|300]', code):
-            suffixed, market = code + '.sz', cls.MarketChoices.SHEN_ZHEN
-        else:
-            suffixed, market = code + '.ss', cls.MarketChoices.SHANG_HAI
-
-        return suffixed, market
 
