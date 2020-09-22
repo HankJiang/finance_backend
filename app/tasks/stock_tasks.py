@@ -22,32 +22,26 @@ def app_context(func):
 
 @celery.task(name='load_stock')
 @time_log
-@app_context
 def load_stock():
     data = stock_cli.query('stock_basic', exchange='', list_status='L',
                            fields='ts_code,symbol,name,area,industry,list_date')
     data = data.to_dict('record')
 
-    app = create_app()
-    app.app_context().push()
+    for item in data:
+        get_or_create(db.session, Stock, {'code': item['symbol']},
+                      {
+                          'search_code': item['ts_code'],
+                          'name': item['name'],
+                          'area': item['area'],
+                          'industry': item['industry'],
+                          'ipo_date': item['list_date']
+                      }, save=False)
 
-    with app.app_context():
-        for item in data:
-            get_or_create(db.session, Stock, {'code': item['symbol']},
-                          {
-                              'search_code': item['ts_code'],
-                              'name': item['name'],
-                              'area': item['area'],
-                              'industry': item['industry'],
-                              'ipo_date': item['list_date']
-                          }, save=False)
-
-        db.session.commit()
+    db.session.commit()
 
 
 @celery.task(name='load_stock_history')
 @time_log
-@app_context
 def load_stock_history():
     start = '20170101'
     end = datetime.now().strftime('%Y%m%d')
