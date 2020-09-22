@@ -3,6 +3,7 @@ FROM python:3.7-slim
 MAINTAINER gsxxm jianghan.ah@foxmail.com
 
 COPY ./requirements.txt /www/requirements.txt
+COPY ./manage.py /www/manage.py
 
 WORKDIR /www
 
