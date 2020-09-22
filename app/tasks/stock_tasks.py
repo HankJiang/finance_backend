@@ -8,10 +8,16 @@ from app.models import Stock, StockHistory
 from app.common.db_tools import get_or_create
 from app import db
 
+from flask import current_app
+
 
 @celery.task(name='load_stock')
 @time_log
 def load_stock():
+    print('111111111111111111111111111111')
+    print(current_app.name)
+    return
+
     data = stock_cli.query('stock_basic', exchange='', list_status='L',
                            fields='ts_code,symbol,name,area,industry,list_date')
     data = data.to_dict('record')
