@@ -1,15 +1,28 @@
+from datetime import datetime, timedelta
+from time import sleep
+from functools import wraps
+
 from app import celery
 from app.common.logger_tools import time_log
 from app.services.stock_service import stock_cli
 from app.models import Stock, StockHistory
 from app.common.db_tools import get_or_create
-from app import db
-from datetime import datetime, timedelta
-from time import sleep
+from app import db, create_app
+
+
+def app_context(func):
+    app = create_app()
+    app.app_context().push()
+    @wraps(func)
+    def context(*args,**kwargs):
+        with app.app_context():
+            return func(*args,**kwargs)
+    return context
 
 
 @celery.task(name='load_stock')
 @time_log
+@app_context
 def load_stock():
     data = stock_cli.query('stock_basic', exchange='', list_status='L',
                            fields='ts_code,symbol,name,area,industry,list_date')
@@ -30,6 +43,7 @@ def load_stock():
 
 @celery.task(name='load_stock_history')
 @time_log
+@app_context
 def load_stock_history():
     start = '20170101'
     end = datetime.now().strftime('%Y%m%d')

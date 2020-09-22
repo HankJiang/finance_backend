@@ -6,6 +6,8 @@ from celery import Celery
 
 from app import config
 
+db = SQLAlchemy()
+
 
 def create_app():
     # create and configure the app
@@ -27,6 +29,10 @@ def create_app():
     app.url_map.strict_slashes = False
     CORS(app, supports_credentials=True, resources={r"*": {"origins": "*"}})
 
+    # db
+    db.init_app(app)
+    Migrate(app, db)
+
     return app
 
 
@@ -38,6 +44,4 @@ def create_celery(app):
 
 
 app = create_app()
-db = SQLAlchemy(app)
-Migrate(app, db)
 celery = create_celery(app)
