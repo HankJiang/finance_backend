@@ -8,6 +8,8 @@ services:
     ports:
       - "9001:9001"
 
+    entrypoint: ["./entrypoint.sh"]
+
     environment:
       FLASK_ENV: production
     networks:
