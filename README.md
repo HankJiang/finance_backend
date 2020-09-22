@@ -37,6 +37,8 @@
     - `> docker login -u username -p password` 私有仓库先登录
     - `> docker run -p local-port:contaner-port -d image-id`
     
+ - 使用 volume 
+    
     
  #### 使用K8S
  
