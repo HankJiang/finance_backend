@@ -8,7 +8,8 @@ services:
     ports:
       - "9001:9001"
 
-    command: bash -c "python3 manage.py db upgrade && gunicorn -b 0.0.0.0:9001 app:app"
+#    command: bash -c "python3 manage.py db upgrade && gunicorn -b 0.0.0.0:9001 app:app"
+    command: bash -c "gunicorn -b 0.0.0.0:9001 app:app"
 
     environment:
       FLASK_ENV: production
