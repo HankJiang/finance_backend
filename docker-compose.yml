@@ -12,6 +12,8 @@ services:
 
     environment:
       FLASK_ENV: production
+    volumes:
+      - app_context:/app
     networks:
       - backend
     depends_on:
@@ -23,11 +25,14 @@ services:
     build: ./
     image: finance_backend:worker
     restart: always
+    user: nobody  # celery不推荐root启用worker
 
     command: celery worker -A app.celery --loglevel=info --beat
 
     environment:
       FLASK_ENV: production
+    volumes:
+      - app_context:/app
     networks:
       - backend
     depends_on:
