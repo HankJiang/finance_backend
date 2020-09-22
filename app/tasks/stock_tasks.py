@@ -6,12 +6,10 @@ from app.common.db_tools import get_or_create
 from app import db
 from datetime import datetime, timedelta
 from time import sleep
-from app.common.db_tools import app_context
 
 
 @celery.task(name='load_stock')
 @time_log
-@app_context
 def load_stock():
     data = stock_cli.query('stock_basic', exchange='', list_status='L',
                            fields='ts_code,symbol,name,area,industry,list_date')
@@ -32,7 +30,6 @@ def load_stock():
 
 @celery.task(name='load_stock_history')
 @time_log
-@app_context
 def load_stock_history():
     start = '20170101'
     end = datetime.now().strftime('%Y%m%d')
