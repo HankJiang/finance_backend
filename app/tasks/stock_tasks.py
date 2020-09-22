@@ -28,17 +28,21 @@ def load_stock():
                            fields='ts_code,symbol,name,area,industry,list_date')
     data = data.to_dict('record')
 
-    for item in data:
-        get_or_create(db.session, Stock, {'code': item['symbol']},
-                      {
-                          'search_code': item['ts_code'],
-                          'name': item['name'],
-                          'area': item['area'],
-                          'industry': item['industry'],
-                          'ipo_date': item['list_date']
-                      }, save=False)
+    app = create_app()
+    app.app_context().push()
 
-    db.session.commit()
+    with app.app_context():
+        for item in data:
+            get_or_create(db.session, Stock, {'code': item['symbol']},
+                          {
+                              'search_code': item['ts_code'],
+                              'name': item['name'],
+                              'area': item['area'],
+                              'industry': item['industry'],
+                              'ipo_date': item['list_date']
+                          }, save=False)
+
+        db.session.commit()
 
 
 @celery.task(name='load_stock_history')
