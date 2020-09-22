@@ -12,8 +12,6 @@ services:
 
     environment:
       FLASK_ENV: production
-    volumes:
-#      - .:/www
     networks:
       - backend
     depends_on:
@@ -30,8 +28,6 @@ services:
 
     environment:
       FLASK_ENV: production
-    volumes:
-#      - .:/www
     networks:
       - backend
     depends_on:
