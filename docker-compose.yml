@@ -32,7 +32,7 @@ services:
 
   mysql:
     image: mysql:5.7
-    restart: unless-stoped
+    restart: unless-stopped
     ports:
       - "3306:3306"
 
@@ -48,7 +48,7 @@ services:
 
   redis:
     image: redis:latest
-    restart: unless-stoped
+    restart: unless-stopped
     ports:
       - "6379:6379"
 
