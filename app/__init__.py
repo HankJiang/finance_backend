@@ -20,10 +20,10 @@ def create_app():
 
     from app.controllers import auth
     from app.controllers import stock
-    from app.controllers import test
+    from app.controllers import developer
     app.register_blueprint(auth.bp)
     app.register_blueprint(stock.bp)
-    app.register_blueprint(test.bp)
+    app.register_blueprint(developer.bp)
 
     # cors
     app.url_map.strict_slashes = False
