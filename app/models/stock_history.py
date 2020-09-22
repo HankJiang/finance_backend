@@ -1,4 +1,5 @@
 from app import db
+from sqlalchemy.orm import relationship, backref
 
 
 class StockHistory(db.Model):
@@ -16,6 +17,8 @@ class StockHistory(db.Model):
     pre_close = db.Column(db.Float(2))
     change = db.Column(db.Float(2))
     change_percent = db.Column(db.Float(2))
+
+    stock = relationship("Stock", backref=backref('stock_history', lazy='noload'))
 
     def __init__(self, stock_id, trade_date, open, close, high, low, pre_close, change, change_percent):
         self.stock_id = stock_id

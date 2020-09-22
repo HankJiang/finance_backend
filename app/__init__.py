@@ -2,8 +2,9 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from celery import Celery
 
-import config
+from app import config
 
 db = SQLAlchemy()
 
@@ -19,8 +20,10 @@ def create_app(test_config=None):
 
     from app.controllers import auth
     from app.controllers import stock
+    from app.controllers import test
     app.register_blueprint(auth.bp)
     app.register_blueprint(stock.bp)
+    app.register_blueprint(test.bp)
 
     # cors
     app.url_map.strict_slashes = False
@@ -33,4 +36,12 @@ def create_app(test_config=None):
     return app
 
 
+def create_celery(app):
+    celery = Celery(__name__, broker=app.config['CELERY_BROKER_URL'], include=['app.tasks.stock_tasks'])
+    celery.conf.update(app.config)
+
+    return celery
+
+
 app = create_app()
+celery = create_celery(app)
