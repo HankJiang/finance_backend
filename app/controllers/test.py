@@ -7,7 +7,7 @@ bp = Blueprint('test', __name__, url_prefix='/test')
 
 @bp.route('/', methods=['get'])
 def test():
-    from app.tasks.stock_tasks import load_stock_history
-    load_stock_history()
+    from app.tasks.stock_tasks import load_stock
+    load_stock.apply_async()
     return render_ok()
 
