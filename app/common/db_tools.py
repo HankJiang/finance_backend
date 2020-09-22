@@ -1,4 +1,14 @@
 from copy import deepcopy
+from functools import wraps
+from app import app
+
+
+def app_context(func):
+    @wraps(func)
+    def context(*args,**kwargs):
+        with app.app_context():
+            return func(*args,**kwargs)
+    return context()
 
 
 def get_or_create(session, model, query_args, attr_args, save=False):
