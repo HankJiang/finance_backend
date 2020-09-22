@@ -30,6 +30,7 @@ def create_app():
     CORS(app, supports_credentials=True, resources={r"*": {"origins": "*"}})
 
     # db
+    app.app_context().push()
     db.init_app(app)
     Migrate(app, db)
 
