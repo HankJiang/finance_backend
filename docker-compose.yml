@@ -13,7 +13,7 @@ services:
     environment:
       FLASK_ENV: production
     volumes:
-      - app_context:/app:rw
+      - app_context:/app
     networks:
       - backend
     depends_on:
@@ -32,7 +32,7 @@ services:
     environment:
       FLASK_ENV: production
     volumes:
-      - app_context:/app:rw
+      - app_context:/app
     networks:
       - backend
     depends_on:
@@ -66,3 +66,6 @@ services:
 
 networks:
   backend:
+
+volumes:
+  app_context:
