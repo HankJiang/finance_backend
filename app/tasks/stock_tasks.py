@@ -36,6 +36,8 @@ def load_stock_history():
     end = datetime.now().strftime('%Y%m%d')
 
     for stock in db.session.query(Stock):
+        sleep(0.12)
+
         last_history = db.session.query(StockHistory)\
             .filter_by(stock_id=stock.id)\
             .order_by(StockHistory.trade_date.desc()).first()
