@@ -35,8 +35,11 @@ def load_stock_history():
     start = '20170101'
     end = datetime.now().strftime('%Y%m%d')
 
+    i = 0
     for stock in db.session.query(Stock):
-        sleep(0.12)
+        sleep(0.2)
+        i += 1
+        print(i)
 
         last_history = db.session.query(StockHistory)\
             .filter_by(stock_id=stock.id)\
